@@ -92,7 +92,7 @@ class LitBTTR(pl.LightningModule):
             LaTex string
         """
         assert img.dim() == 3
-        img_mask = torch.zeros_like(img, dtype=torch.long)  # squeeze channel
+        img_mask = torch.zeros_like(img, dtype=torch.bool)  # squeeze channel
         hyps = self.bttr.beam_search(img.unsqueeze(0), img_mask, beam_size, max_len)
         best_hyp = max(hyps, key=lambda h: h.score / (len(h) ** alpha))
         return vocab.indices2label(best_hyp.seq)
